@@ -79,11 +79,13 @@ for data_id in range(len(exported_data_files)):
 
             if obj_type != obj_type_for_human:
                 continue
+            #print(obj_rect, targeted_sector)
+
             if ( not ( # whenever the two matrix are NOT apart from each other, they intersects
                 obj_rect[1][0] < targeted_sector[0][0] or # the right side of the object is on the left of the left side of the targeted area
                 obj_rect[0][0] > targeted_sector[1][0] or # the left side of the object is on the right of the right side of the targeted area
                 obj_rect[1][1] < targeted_sector[0][1] or # the upper side of the object is below the bottom of the targeted area
-                obj_rect[0][1] > targeted_sector[0][1] # the bottom of the object is on top of the upper side of the targeted area
+                obj_rect[0][1] > targeted_sector[1][1] # the bottom of the object is on top of the upper side of the targeted area
             )):
                 flag = True
 
@@ -97,7 +99,8 @@ for data_id in range(len(exported_data_files)):
         sys.stdout.write("\r")
         sys.stdout.flush()
 
-
+sys.stdout.flush()
+print()
 print("<-- finished! marked", len(marked_frames), "frames in total -->")
 
 
@@ -110,11 +113,11 @@ for i in marked_frames:
     try:
         prev_period = marked_periods[-1] # the last time when a frame is marked
         if frame_time - prev_period[1] <= 5: # if two frames are within 5 seconds close to each other
-            marked_periods[-1] = (marked_periods[0] , frame_time+5) # just lengthen the last period, in other word, connect the present period with the last one
+            marked_periods[-1] = (marked_periods[-1][0] , min(frame_time+5, len(exported_data_files) / frame_rate)) # just lengthen the last period, in other word, connect the present period with the last one
             continue
     except IndexError:
         pass
 
-    marked_periods.append((frame_time-5, frame_time+5))
+    marked_periods.append((max(frame_time-5, 0), min(frame_time+5, len(exported_data_files) / frame_rate)))
 
 print(marked_periods)
