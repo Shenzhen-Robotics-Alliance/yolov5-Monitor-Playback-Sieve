@@ -16,6 +16,7 @@ import os, sys
 data_dir = ".\\runs\\detect\\" + input("the name of the exported data? (usually exp1,exp2 and so on)") + "\\labels\\"
 obj_type_for_human = 0
 frame_rate = 50
+extend_length = 5 # the amount of seconds to extend from the frames that are marked
 
 exported_data_files = os.listdir(data_dir)
 
@@ -113,11 +114,11 @@ for i in marked_frames:
     try:
         prev_period = marked_periods[-1] # the last time when a frame is marked
         if frame_time - prev_period[1] <= 5: # if two frames are within 5 seconds close to each other
-            marked_periods[-1] = (marked_periods[-1][0] , min(frame_time+5, len(exported_data_files) / frame_rate)) # just lengthen the last period, in other word, connect the present period with the last one
+            marked_periods[-1] = (marked_periods[-1][0] , min(frame_time+extend_length, len(exported_data_files) / frame_rate)) # just lengthen the last period, in other word, connect the present period with the last one
             continue
     except IndexError:
         pass
 
-    marked_periods.append((max(frame_time-5, 0), min(frame_time+5, len(exported_data_files) / frame_rate)))
+    marked_periods.append((max(frame_time-extend_length, 0), min(frame_time+extend_length, len(exported_data_files) / frame_rate)))
 
 print(marked_periods)

@@ -78,7 +78,7 @@ def run(
         hide_conf=False,  # hide confidences
         half=False,  # use FP16 half-precision inference
         dnn=False,  # use OpenCV DNN for ONNX inference
-        vid_stride=1,  # video frame-rate stride
+        vid_stride=10,  # video frame-rate stride, when frame rate is 50, this means that yolov5 will detect 5 frames a second
 ):
     source = str(source)
     save_img = not nosave and not source.endswith('.txt')  # save inference images
@@ -164,8 +164,11 @@ def run(
                     if save_txt:  # Write to file
                         xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) / gn).view(-1).tolist()  # normalized xywh
                         line = (cls, *xywh, conf) if save_conf else (cls, *xywh)  # label format
-                        with open(f'{txt_path}.txt', 'a') as f:
-                            f.write(('%g ' * len(line)).rstrip() % line + '\n')
+
+                        # save result
+                        # with open(f'{txt_path}.txt', 'a') as f:
+                        with open("labels.txt", "a") as f:
+                            f.write(('%g ' * len(line)).rstrip() % line + '\n') # add to the tail
 
                     if save_img or save_crop or view_img:  # Add bbox to image
                         c = int(cls)  # integer class
@@ -183,6 +186,11 @@ def run(
                     cv2.resizeWindow(str(p), im0.shape[1], im0.shape[0])
                 cv2.imshow(str(p), im0)
                 cv2.waitKey(1)  # 1 millisecond
+
+            # add "/" in the end of the labels of each frame to separate
+            if save_txt:
+                with open("labels.txt", "a") as f:
+                    f.write("/")
 
             # Save results (image with detections)
             if save_img:
