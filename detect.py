@@ -111,6 +111,8 @@ def run(
         dataset = LoadImages(source, img_size=imgsz, stride=stride, auto=pt, vid_stride=vid_stride)
     vid_path, vid_writer = [None] * bs, [None] * bs
 
+    with open
+
     # Run inference
     model.warmup(imgsz=(1 if pt or model.triton else bs, 3, *imgsz))  # warmup
     seen, windows, dt = 0, [], (Profile(), Profile(), Profile())
@@ -167,7 +169,7 @@ def run(
 
                         # save result
                         # with open(f'{txt_path}.txt', 'a') as f:
-                        with open("labels.txt", "a") as f:
+                        with open(str(save_dir / 'labels' / p.stem) + ".txt", "a") as f:
                             f.write(('%g ' * len(line)).rstrip() % line + '\n') # add to the tail
 
                     if save_img or save_crop or view_img:  # Add bbox to image
@@ -252,7 +254,7 @@ def parse_opt():
     parser.add_argument('--hide-conf', default=False, action='store_true', help='hide confidences')
     parser.add_argument('--half', action='store_true', help='use FP16 half-precision inference')
     parser.add_argument('--dnn', action='store_true', help='use OpenCV DNN for ONNX inference')
-    parser.add_argument('--vid-stride', type=int, default=1, help='video frame-rate stride')
+    parser.add_argument('--vid-stride', type=int, default=10, help='video frame-rate stride')
     opt = parser.parse_args()
     opt.imgsz *= 2 if len(opt.imgsz) == 1 else 1  # expand
     print_args(vars(opt))
