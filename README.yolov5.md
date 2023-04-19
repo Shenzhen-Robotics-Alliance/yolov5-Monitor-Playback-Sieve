@@ -4,7 +4,7 @@
       <img width="100%" src="https://raw.githubusercontent.com/ultralytics/assets/main/yolov5/v70/splash.png"></a>
   </p>
 
-[English](README.md) | [简体中文](README.zh-CN.md)
+[English](README.yolov5.md) | [简体中文](README.yolov5.zh-CN.md)
 <br>
 
 <div>

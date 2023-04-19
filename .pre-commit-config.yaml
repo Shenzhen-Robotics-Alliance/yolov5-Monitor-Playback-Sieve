@@ -48,7 +48,7 @@ repos:
         additional_dependencies:
           - mdformat-gfm
           - mdformat-black
-        # exclude: "README.md|README.zh-CN.md|CONTRIBUTING.md"
+        # exclude: "README.yolov5.md|README.yolov5.zh-CN.md|CONTRIBUTING.md"
 
   - repo: https://github.com/PyCQA/flake8
     rev: 6.0.0
