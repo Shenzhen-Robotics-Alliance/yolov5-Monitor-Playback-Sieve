@@ -1,0 +1,1 @@
+.\venv\Scripts\python.exe .\detect.py --save-txt --weights .\models\yolov5s.pt --source .\data\images\try.mp4

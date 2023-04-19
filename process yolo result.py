@@ -19,7 +19,7 @@ data_file = ".\\runs\\detect\\" + input("the name of the exported data? (usually
 data_file += os.listdir(data_file)[0]
 
 obj_type_for_human = 0
-frame_rate = 50
+frame_rate = 5
 extend_length = 5 # the amount of seconds to extend from the frames that are marked
 
 '''targeted_sector = [
@@ -57,7 +57,7 @@ targeted_sector = [
 
 marked_frames = []
 with open(data_file, mode="r") as frames_data_file: # open the single-file data
-    frames_data = frames_data_file.read().split("/") # load the data
+    frames_data = frames_data_file.read().split("/") # load the data and split the frames
     print("<--successfully loaded", len(frames_data), "frames from file", data_file, "-->")
     for frame_id in range(len(frames_data)):
         flag = False

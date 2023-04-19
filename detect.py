@@ -190,7 +190,7 @@ def run(
             # add "/" in the end of the labels of each frame to separate
             if save_txt:
                 with open(str(save_dir / 'labels' / p.stem) + ".txt", "a") as f:
-                    f.write("/ \n")
+                    f.write("/")
 
             # Save results (image with detections)
             if save_img:
