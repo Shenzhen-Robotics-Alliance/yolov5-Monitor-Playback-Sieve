@@ -19,7 +19,7 @@ data_file = ".\\runs\\detect\\" + input("the name of the exported data? (usually
 data_file += os.listdir(data_file)[0]
 
 obj_type_for_human = 0
-frame_rate = 5
+frame_rate = int(input("the frame rate of the video?")) / 10 # detect 1 frame from every 10 frames
 extend_length = 5 # the amount of seconds to extend from the frames that are marked
 
 '''targeted_sector = [
