@@ -113,14 +113,12 @@ marked_frames.sort()
 marked_periods = []
 for i in marked_frames:
     frame_time = i / frame_rate # the time at which this frame comes up
-    try:
+    if marked_periods: # if there are periods that have already been marked
         prev_period = marked_periods[-1] # the last time when a frame is marked
         if frame_time - prev_period[1] <= 5: # if two frames are within 5 seconds close to each other
-            marked_periods[-1] = (marked_periods[-1][0] , min(frame_time+extend_length, len(exported_data_files) / frame_rate)) # just lengthen the last period, in other word, connect the present period with the last one
+            marked_periods[-1] = (marked_periods[-1][0] , min(frame_time+extend_length, len(frames_data) / frame_rate)) # just lengthen the last period, in other word, connect the present period with the last one
             continue
-    except IndexError:
-        pass
 
-    marked_periods.append((max(frame_time-extend_length, 0), min(frame_time+extend_length, len(exported_data_files) / frame_rate)))
+    marked_periods.append((max(frame_time-extend_length, 0), min(frame_time+extend_length, len(frames_data) / frame_rate)))
 
 print(marked_periods)
