@@ -13,12 +13,14 @@ w: the width of the rectangle that an object sits in, ranged from 0-1 where 1 is
 h: the height of the rectangle that an object sits in, ranged from 0-1 where 1 is the height of the whole picture
 """
 import os, sys
-data_dir = ".\\runs\\detect\\" + input("the name of the exported data? (usually exp1,exp2 and so on)") + "\\labels\\"
+# the path to the saved data
+data_file = ".\\runs\\detect\\" + input("the name of the exported data? (usually exp1,exp2 and so on)") + "\\labels\\"
+# open the single file
+data_file += os.listdir(data_file)[0]
+
 obj_type_for_human = 0
 frame_rate = 50
 extend_length = 5 # the amount of seconds to extend from the frames that are marked
-
-exported_data_files = os.listdir(data_dir)
 
 '''targeted_sector = [
     [
@@ -54,14 +56,14 @@ targeted_sector = [
 
 
 marked_frames = []
+with open(data_file, mode="r") as frames_data_file: # open the single-file data
+    frames_data = frames_data_file.read().split("/") # load the data
+    print("<--successfully loaded", len(frames_data), "frames from file", data_file, "-->")
+    for frame_id in range(len(frames_data)):
+        flag = False
+        frame_data = frames_data[frame_id] # the data for this single frame
 
-for data_id in range(len(exported_data_files)):
-    data_path = os.path.join(data_dir, exported_data_files[data_id])
-    frame_id = exported_data_files[data_id].split("_")[1]
-    flag = False
-
-    with open(data_path, mode="r") as frame_data:
-        objects = frame_data.read().splitlines()
+        objects = frame_data.splitlines()
         for obj in objects:
             obj_type = float(obj.split()[0])
             obj_pos = [float(obj.split()[1]), float(obj.split()[2])]
@@ -90,15 +92,15 @@ for data_id in range(len(exported_data_files)):
             )):
                 flag = True
 
-    if flag:
-        sys.stdout.write("processing data from file: " + data_path + ", frame (" +str(data_id) + "/" + str(len(exported_data_files)) + ")  found targets in this frame")
-        sys.stdout.write("\r")
-        sys.stdout.flush()
-        marked_frames.append(data_id)
-    else:
-        sys.stdout.write("processing data from file: " + data_path + ", frame (" + str(data_id) + "/" + str(len(exported_data_files)) + ")  no targets in the selected sector")
-        sys.stdout.write("\r")
-        sys.stdout.flush()
+        if flag:
+            sys.stdout.write("processing data from frame (" +str(frame_id) + "/" + str(len(frames_data)) + ")  found targets in this frame")
+            sys.stdout.write("\r")
+            sys.stdout.flush()
+            marked_frames.append(frame_id)
+        else:
+            sys.stdout.write("processing data from frame (" +str(frame_id) + "/" + str(len(frames_data)) + ")  no targets in the selected sector")
+            sys.stdout.write("\r")
+            sys.stdout.flush()
 
 sys.stdout.flush()
 print()

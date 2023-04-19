@@ -111,8 +111,6 @@ def run(
         dataset = LoadImages(source, img_size=imgsz, stride=stride, auto=pt, vid_stride=vid_stride)
     vid_path, vid_writer = [None] * bs, [None] * bs
 
-    with open
-
     # Run inference
     model.warmup(imgsz=(1 if pt or model.triton else bs, 3, *imgsz))  # warmup
     seen, windows, dt = 0, [], (Profile(), Profile(), Profile())
@@ -191,8 +189,8 @@ def run(
 
             # add "/" in the end of the labels of each frame to separate
             if save_txt:
-                with open("labels.txt", "a") as f:
-                    f.write("/")
+                with open(str(save_dir / 'labels' / p.stem) + ".txt", "a") as f:
+                    f.write("/ \n")
 
             # Save results (image with detections)
             if save_img:
