@@ -121,4 +121,18 @@ for i in marked_frames:
 
     marked_periods.append((max(frame_time-extend_length, 0), min(frame_time+extend_length, len(frames_data) / frame_rate)))
 
-print(marked_periods)
+
+periods = []
+for i in marked_periods:
+    result =[]
+    if i[0] > 60:
+        result.append(str(int(i[0]/60)) + "min, " + str(int(i[0] % 60)) + "seconds")
+    else:
+        result.append(str(int(i[0])) + "seconds")
+    if i[1] > 60:
+        result.append(str(int(i[1]/60)) + "min, " + str(int(i[1] % 60)) + "seconds")
+    else:
+        result.append(str(i[1]) + "seconds")
+    periods.append(result)
+
+print(periods)
